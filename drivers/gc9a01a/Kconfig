@@ -4,13 +4,23 @@
 # General Public License v2.1. See the file LICENSE in the top level
 # directory for more details.
 
-config MODULE_GC9A01A
-    bool "drivers_gc9a01a"
-    depends on TEST_KCONFIG
-    depends on HAS_PERIPH_GPIO
-    depends on HAS_PERIPH_SPI
-    select MODULE_PERIPH_GPIO
-    select MODULE_PERIPH_SPI
-    select MODULE_LCD
-    select MODULE_ZTIMER
-    select MODULE_ZTIMER_MSEC
+menu "GC9A01A driver"
+    depends on USEMODULE_GC9A01A
+
+config GC9A01A_VREG1A
+    int "VREG1A voltage level (in millivolts)"
+    default 5340
+    range 4800 7340
+    help
+        Configure VREG1A level, which is the highest positive grayscale reference voltage.
+        VREG1A should be between 4.8 V and 7.34 V .
+
+config GC9A01A_VREG2A
+    int "VREG2A voltage level (in millivolts)"
+    default -3980
+    range -4200 -1660
+    help
+        Configure VREG2A level, which is the lowest negative grayscale reference voltage.
+        VREG2A should be between -4.2 V and -1.66 V .
+
+endmenu # GC9A01A driver

@@ -13,6 +13,7 @@ endmenu # Actuator Device Drivers
 
 menu "Display Device Drivers"
 rsource "ili9341/Kconfig"
+rsource "gc9a01a/Kconfig"
 rsource "lcd/Kconfig"
 rsource "st77xx/Kconfig"
 rsource "touch_dev_gestures/Kconfig"
