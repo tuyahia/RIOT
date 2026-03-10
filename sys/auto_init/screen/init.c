@@ -41,6 +41,10 @@ void auto_init_screen(void)
             extern void auto_init_u8g2_display(void);
             auto_init_u8g2_display();
         }
+        if (IS_USED(MODULE_GC9A01A)) {
+            extern void auto_init_gc9a01a(void);
+            auto_init_gc9a01a();
+        }
     }
 
     if (IS_USED(MODULE_TOUCH_DEV)) {
