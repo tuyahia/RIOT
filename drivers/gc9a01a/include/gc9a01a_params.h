@@ -31,50 +31,50 @@ extern "C" {
  * @{
  */
 #ifndef GC9A01A_PARAM_SPI
-#define GC9A01A_PARAM_SPI          SPI_DEV(0)
+#define GC9A01A_PARAM_SPI               SPI_DEV(0)                  /**< SPI device */
 #endif
 #ifndef GC9A01A_PARAM_SPI_CLK
-#define GC9A01A_PARAM_SPI_CLK      SPI_CLK_5MHZ
+#define GC9A01A_PARAM_SPI_CLK           SPI_CLK_5MHZ                /**< SPI clock frequency */
 #endif
 #ifndef GC9A01A_PARAM_CS
-#define GC9A01A_PARAM_CS           GPIO_PIN(2, 2)
+#define GC9A01A_PARAM_CS                GPIO_PIN(2, 2)              /**< Chip select pin */
 #endif
 #ifndef GC9A01A_PARAM_DCX
-#define GC9A01A_PARAM_DCX          GPIO_PIN(3, 13)
+#define GC9A01A_PARAM_DCX               GPIO_PIN(3, 13)             /**< DCX pin */
 #endif
 #ifndef GC9A01A_PARAM_RST
-#define GC9A01A_PARAM_RST          GPIO_UNDEF
+#define GC9A01A_PARAM_RST               GPIO_UNDEF                  /**< Reset pin */
 #endif
 #ifndef GC9A01A_PARAM_SPI_MODE
-#define GC9A01A_PARAM_SPI_MODE     SPI_MODE_0
+#define GC9A01A_PARAM_SPI_MODE          SPI_MODE_0                  /**< SPI mode */
 #endif
 #ifndef GC9A01A_PARAM_RGB
-#define GC9A01A_PARAM_RGB          0
+#define GC9A01A_PARAM_RGB               0                           /**< RGB mode enable */
 #endif
 #ifndef GC9A01A_PARAM_INVERTED
-#define GC9A01A_PARAM_INVERTED     0
+#define GC9A01A_PARAM_INVERTED          0                           /**< Inverted mode enable */
 #endif
 #ifndef GC9A01A_PARAM_NUM_LINES
-#define GC9A01A_PARAM_NUM_LINES         240U    /**< Number of lines */
+#define GC9A01A_PARAM_NUM_LINES         240U                        /**< Number of lines (e.g. rows) */
 #endif
 #ifndef GC9A01A_PARAM_RGB_CHANNELS
-#define GC9A01A_PARAM_RGB_CHANNELS      240U    /**< Number of RGB channels (e.g. columns) */
+#define GC9A01A_PARAM_RGB_CHANNELS      240U                        /**< Number of RGB channels (e.g. columns) */
 #endif
 #ifndef GC9A01A_PARAM_ROTATION
-#define GC9A01A_PARAM_ROTATION          GC9A01A_ROTATION_VERT
+#define GC9A01A_PARAM_ROTATION          GC9A01A_ROTATION_VERT       /**< Rotation mode */
 #endif
 #ifndef GC9A01A_PARAM_OFFSET_X
-#define GC9A01A_PARAM_OFFSET_X          0               /**< Horizontal offset */
+#define GC9A01A_PARAM_OFFSET_X          0                           /**< Horizontal offset */
 #endif
 #ifndef GC9A01A_PARAM_OFFSET_Y
-#define GC9A01A_PARAM_OFFSET_Y          0               /**< Vertival offset */
+#define GC9A01A_PARAM_OFFSET_Y          0                           /**< Vertical offset */
 #endif
 
 #if MODULE_LCD_SPI || DOXYGEN
 /** Default interface params if SPI serial interface is enabled */
 #define GC9A01A_PARAM_IF_SPI        .spi = GC9A01A_PARAM_SPI, \
-                                    .spi_clk = GC9A01A_PARAM_SPI_CLK, \
-                                    .spi_mode = GC9A01A_PARAM_SPI_MODE,
+        .spi_clk = GC9A01A_PARAM_SPI_CLK, \
+        .spi_mode = GC9A01A_PARAM_SPI_MODE,
 #else
 #define GC9A01A_PARAM_IF_SPI
 #endif
@@ -82,15 +82,15 @@ extern "C" {
 #if MODULE_LCD_PARALLEL || DOXYGEN
 /** Default interface params if MCU 8080 8-bit parallel interface is enabled */
 #define GC9A01A_PARAM_IF_PAR        .d0_pin = GC9A01A_PARAM_D0, \
-                                    .d1_pin = GC9A01A_PARAM_D1, \
-                                    .d2_pin = GC9A01A_PARAM_D2, \
-                                    .d3_pin = GC9A01A_PARAM_D3, \
-                                    .d4_pin = GC9A01A_PARAM_D4, \
-                                    .d5_pin = GC9A01A_PARAM_D5, \
-                                    .d6_pin = GC9A01A_PARAM_D6, \
-                                    .d7_pin = GC9A01A_PARAM_D7, \
-                                    .wrx_pin = GC9A01A_PARAM_WRX, \
-                                    .rdx_pin = GC9A01A_PARAM_RDX,
+        .d1_pin = GC9A01A_PARAM_D1, \
+        .d2_pin = GC9A01A_PARAM_D2, \
+        .d3_pin = GC9A01A_PARAM_D3, \
+        .d4_pin = GC9A01A_PARAM_D4, \
+        .d5_pin = GC9A01A_PARAM_D5, \
+        .d6_pin = GC9A01A_PARAM_D6, \
+        .d7_pin = GC9A01A_PARAM_D7, \
+        .wrx_pin = GC9A01A_PARAM_WRX, \
+        .rdx_pin = GC9A01A_PARAM_RDX,
 #else
 #define GC9A01A_PARAM_IF_PAR
 #endif
@@ -98,13 +98,13 @@ extern "C" {
 #if MODULE_LCD_PARALLEL_16BIT || DOXYGEN
 /** Additional default interface params if MCU 8080 16-bit parallel interface is enabled */
 #define GC9A01A_PARAM_IF_PAR_16BIT  .d8_pin = GC9A01A_PARAM_D8, \
-                                    .d9_pin = GC9A01A_PARAM_D9, \
-                                    .d10_pin = GC9A01A_PARAM_D10, \
-                                    .d11_pin = GC9A01A_PARAM_D11, \
-                                    .d12_pin = GC9A01A_PARAM_D12, \
-                                    .d13_pin = GC9A01A_PARAM_D13, \
-                                    .d14_pin = GC9A01A_PARAM_D14, \
-                                    .d15_pin = GC9A01A_PARAM_D15,
+        .d9_pin = GC9A01A_PARAM_D9, \
+        .d10_pin = GC9A01A_PARAM_D10, \
+        .d11_pin = GC9A01A_PARAM_D11, \
+        .d12_pin = GC9A01A_PARAM_D12, \
+        .d13_pin = GC9A01A_PARAM_D13, \
+        .d14_pin = GC9A01A_PARAM_D14, \
+        .d15_pin = GC9A01A_PARAM_D15,
 #else
 #define GC9A01A_PARAM_IF_PAR_16BIT
 #endif
@@ -145,8 +145,7 @@ extern "C" {
                                       .rgb_channels = GC9A01A_PARAM_RGB_CHANNELS, \
                                       .rotation = GC9A01A_PARAM_ROTATION, \
                                       .offset_x = GC9A01A_PARAM_OFFSET_X, \
-                                      .offset_y = GC9A01A_PARAM_OFFSET_Y, \
-}
+                                      .offset_y = GC9A01A_PARAM_OFFSET_Y }           /**< Configuration parameter set */
 #endif
 /** @} */
 

@@ -50,12 +50,12 @@ extern "C" {
  * @name    GC9A01A display rotation modes
  * @{
  */
-#define GC9A01A_ROTATION_VERT           LCD_MADCTL_MX       /**< Vertical mode */
-#define GC9A01A_ROTATION_VERT_FLIP      LCD_MADCTL_MY       /**< Flipped vertical */
-#define GC9A01A_ROTATION_HORZ           LCD_MADCTL_MV       /**< Horizontal mode */
+#define GC9A01A_ROTATION_VERT           LCD_MADCTL_MX           /**< Vertical mode */
+#define GC9A01A_ROTATION_VERT_FLIP      LCD_MADCTL_MY           /**< Flipped vertical */
+#define GC9A01A_ROTATION_HORZ           LCD_MADCTL_MV           /**< Horizontal mode */
 #define GC9A01A_ROTATION_HORZ_FLIP      LCD_MADCTL_MV | \
                                         LCD_MADCTL_MY | \
-                                        LCD_MADCTL_MX       /**< Horizontal flipped */
+                                        LCD_MADCTL_MX           /**< Horizontal flipped */
 /** @} */
 
 
