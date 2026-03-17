@@ -11,7 +11,7 @@
  * @{
  *
  * @file
- * @brief       Device driver implementation for the drivers_gc9a01a
+ * @brief       Device driver implementation for the GC9A01A display controller
  *
  * @author      Yahia Abdella <yahia.abdella@tuhh.de>
  *

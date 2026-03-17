@@ -13,6 +13,14 @@
  * @ingroup     drivers_display
  * @brief       Device driver implementation for the GC9A01A display controller
  *
+ * The GC9A01A is a single chip display driver for 240x240 TFT LCD displays.
+ *
+ * The driver communicates with the device either via an
+ *
+ * - SPI serial interface (if module `lcd_spi` enabled) or an
+ * - MCU 8080 8-/16-bit parallel interface (if module `lcd_parallel` or
+ *   module `lcd_parallel_16` is enabled).
+ *
  * @{
  *
  * @file
@@ -33,7 +41,7 @@ extern "C" {
  * VREG1A should be between 4.8 V and 7.34 V .
  */
 #ifndef CONFIG_GC9A01A_VREG1A
-#define CONFIG_GC9A01A_VREG1A             5340
+#define CONFIG_GC9A01A_VREG1A             (5340)
 #endif
 
 /**
