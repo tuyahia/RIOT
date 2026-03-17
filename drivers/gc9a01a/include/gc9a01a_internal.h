@@ -49,12 +49,12 @@ extern "C" {
  * @name LCD GC9A01A values
  * @{
  */
-#define GC9A01A_ID_1                        (0x00)      /**< Expected manufacturer ID */
-#define GC9A01A_ID_2                        (0x9A)      /**< Expected driver version ID */
-#define GC9A01A_ID_3                        (0x01)      /**< Expected driver ID */
-#define GC9A01A_16_BIT_FORMAT               (0x55)      /**< COLMOD value for 16 bit pixel format */
-#define GC9A01A_VRH_DEFAULT                 (0x28)      /**< Default value for VRH */
-#define GC9A01A_FRAMERATE_4DOT_INVERSION    (0x34)      /**< Framrate register value to enable 4 dot inversion */
+/** COLMOD value for 16 bit pixel format */
+#define GC9A01A_16_BIT_FORMAT               (0x55)
+/** Default value for VRH */
+#define GC9A01A_VRH_DEFAULT                 (0x28)
+/** Framrate register value to enable 4 dot inversion */
+#define GC9A01A_FRAMERATE_4DOT_INVERSION    (0x34)
 /** @} */
 
 /**

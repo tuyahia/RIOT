@@ -18,7 +18,6 @@
  * @}
  */
 
-
 #include <assert.h>
 #include <stdint.h>
 #include <string.h>
@@ -30,7 +29,7 @@
 #include "gc9a01a.h"
 #include "gc9a01a_internal.h"
 
-#define ENABLE_DEBUG 1
+#define ENABLE_DEBUG 0
 #include "debug.h"
 
 /* Datasheet page 168, formula from table (assumes vrh = 0x28)
@@ -59,7 +58,6 @@ static void _gc9a01a_send_cmds(lcd_t *dev, const uint8_t *cmds)
         addr += numArgs;
     }
 }
-
 
 /*
  * Initialize the display controller.

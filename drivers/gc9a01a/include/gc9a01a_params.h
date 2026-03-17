@@ -31,43 +31,43 @@ extern "C" {
  * @{
  */
 #ifndef GC9A01A_PARAM_SPI
-#define GC9A01A_PARAM_SPI               SPI_DEV(0)                  /**< SPI device */
+#define GC9A01A_PARAM_SPI               SPI_DEV(0)              /**< SPI device */
 #endif
 #ifndef GC9A01A_PARAM_SPI_CLK
-#define GC9A01A_PARAM_SPI_CLK           SPI_CLK_5MHZ                /**< SPI clock frequency */
+#define GC9A01A_PARAM_SPI_CLK           SPI_CLK_5MHZ            /**< SPI clock frequency */
 #endif
 #ifndef GC9A01A_PARAM_CS
-#define GC9A01A_PARAM_CS                GPIO_PIN(2, 2)              /**< Chip select pin */
+#define GC9A01A_PARAM_CS                GPIO_PIN(2, 2)          /**< Chip select pin */
 #endif
 #ifndef GC9A01A_PARAM_DCX
-#define GC9A01A_PARAM_DCX               GPIO_PIN(3, 13)             /**< DCX pin */
+#define GC9A01A_PARAM_DCX               GPIO_PIN(3, 13)         /**< DCX pin */
 #endif
 #ifndef GC9A01A_PARAM_RST
-#define GC9A01A_PARAM_RST               GPIO_UNDEF                  /**< Reset pin */
+#define GC9A01A_PARAM_RST               GPIO_UNDEF              /**< Reset pin */
 #endif
 #ifndef GC9A01A_PARAM_SPI_MODE
-#define GC9A01A_PARAM_SPI_MODE          SPI_MODE_0                  /**< SPI mode */
+#define GC9A01A_PARAM_SPI_MODE          SPI_MODE_0              /**< SPI mode */
 #endif
 #ifndef GC9A01A_PARAM_RGB
-#define GC9A01A_PARAM_RGB               0                           /**< RGB mode enable */
+#define GC9A01A_PARAM_RGB               0                       /**< RGB mode enable */
 #endif
 #ifndef GC9A01A_PARAM_INVERTED
-#define GC9A01A_PARAM_INVERTED          0                           /**< Inverted mode enable */
+#define GC9A01A_PARAM_INVERTED          0                       /**< Inverted mode enable */
 #endif
 #ifndef GC9A01A_PARAM_NUM_LINES
-#define GC9A01A_PARAM_NUM_LINES         240U                        /**< Number of lines (e.g. rows) */
+#define GC9A01A_PARAM_NUM_LINES         240U                    /**< Number of lines */
 #endif
 #ifndef GC9A01A_PARAM_RGB_CHANNELS
-#define GC9A01A_PARAM_RGB_CHANNELS      240U                        /**< Number of RGB channels (e.g. columns) */
+#define GC9A01A_PARAM_RGB_CHANNELS      240U                    /**< Number of RGB channels */
 #endif
 #ifndef GC9A01A_PARAM_ROTATION
-#define GC9A01A_PARAM_ROTATION          GC9A01A_ROTATION_VERT       /**< Rotation mode */
+#define GC9A01A_PARAM_ROTATION          GC9A01A_ROTATION_VERT   /**< Rotation mode */
 #endif
 #ifndef GC9A01A_PARAM_OFFSET_X
-#define GC9A01A_PARAM_OFFSET_X          0                           /**< Horizontal offset */
+#define GC9A01A_PARAM_OFFSET_X          0                       /**< Horizontal offset */
 #endif
 #ifndef GC9A01A_PARAM_OFFSET_Y
-#define GC9A01A_PARAM_OFFSET_Y          0                           /**< Vertical offset */
+#define GC9A01A_PARAM_OFFSET_Y          0                       /**< Vertical offset */
 #endif
 
 #if MODULE_LCD_SPI || DOXYGEN
