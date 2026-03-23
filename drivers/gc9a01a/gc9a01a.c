@@ -1,9 +1,6 @@
 /*
- * Copyright (C) 2026 Technische Universität Hamburg
- *
- * This file is subject to the terms and conditions of the GNU Lesser
- * General Public License v2.1. See the file LICENSE in the top level
- * directory for more details.
+ * SPDX-FileCopyrightText: 2026 Technische Universität Hamburg
+ * SPDX-License-Identifier: LGPL-2.1-only
  */
 
 /**
@@ -109,7 +106,7 @@ static int _init(lcd_t *dev, const lcd_params_t *params)
             0x8D, 1, 0x03,
             0x90, 4, 0x08, 0x08, 0x08, 0x08,
             0xFF, 3, 0x60, 0x01, 0x04,
-            0x0  // End of list
+            0x0  /* End of list */
         };
 
         _gc9a01a_send_cmds(dev, commands);
@@ -158,7 +155,7 @@ static int _init(lcd_t *dev, const lcd_params_t *params)
             0x74, 7, 0x10, 0x85, 0x80, 0x00, 0x00, 0x4E, 0x00,
             0x98, 2, 0x3e, 0x07,
             0x99, 2, 0x3e, 0x07,
-            0x0  // End of list
+            0x0  /* End of list */
         };
 
         _gc9a01a_send_cmds(dev, commands);
@@ -169,7 +166,7 @@ static int _init(lcd_t *dev, const lcd_params_t *params)
     command_params[0] |= dev->params->rgb ? 0 : LCD_MADCTL_BGR;
     lcd_ll_write_cmd(dev, LCD_CMD_MADCTL, command_params, 1);
 
-    /* enable Inversion if configured, reset default is off */
+    /* Enable Inversion if configured, reset default is off */
     if (dev->params->inverted) {
         lcd_ll_write_cmd(dev, LCD_CMD_DINVON, NULL, 0);
     }

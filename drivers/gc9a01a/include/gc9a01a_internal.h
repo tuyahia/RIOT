@@ -1,9 +1,6 @@
 /*
- * Copyright (C) 2026 Technische Universität Hamburg
- *
- * This file is subject to the terms and conditions of the GNU Lesser
- * General Public License v2.1. See the file LICENSE in the top level
- * directory for more details.
+ * SPDX-FileCopyrightText: 2026 Technische Universität Hamburg
+ * SPDX-License-Identifier: LGPL-2.1-only
  */
 
 #pragma once
@@ -56,11 +53,6 @@ extern "C" {
 /** Framrate register value to enable 4 dot inversion */
 #define GC9A01A_FRAMERATE_4DOT_INVERSION    (0x34)
 /** @} */
-
-/**
- * @brief   GC9A01A controller specific initialization part
- */
-int gc9a01a_init(lcd_t *dev, const lcd_params_t *params);
 
 #ifdef __cplusplus
 }
