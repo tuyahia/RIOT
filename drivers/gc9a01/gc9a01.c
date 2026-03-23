@@ -17,7 +17,6 @@
 
 #include <assert.h>
 #include <stdint.h>
-#include <string.h>
 #include "log.h"
 
 #include "ztimer.h"
@@ -177,6 +176,8 @@ static int _init(lcd_t *dev, const lcd_params_t *params)
 
     /* Finally release the device */
     lcd_ll_release(dev);
+
+    LOG_INFO("GC9A01: Initialized device.\n");
 
     return 0;
 }
