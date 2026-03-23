@@ -2,11 +2,7 @@ BOARD ?= stm32f429i-disc1
 
 include ../Makefile.drivers_common
 
-USEMODULE += stdio_uart
-EXTERNAL_BOARD_DIRS = $(RIOTBASE)/../boards
-BOARD = waveshare-round-esp32s3
-
-USEMODULE += gc9a01a
+USEMODULE += gc9a01
 USEMODULE += ztimer
 USEMODULE += ztimer_msec
 

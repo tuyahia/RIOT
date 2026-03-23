@@ -4,11 +4,11 @@
  */
 
 /**
- * @ingroup     drivers_gc9a01a
+ * @ingroup     drivers_gc9a01
  * @{
  *
  * @file
- * @brief       Device driver implementation for the GC9A01A display controller
+ * @brief       Device driver implementation for the GC9A01 display controller
  *
  * @author      Yahia Abdella <yahia.abdella@tuhh.de>
  *
@@ -23,27 +23,27 @@
 #include "ztimer.h"
 #include "lcd.h"
 #include "lcd_internal.h"
-#include "gc9a01a.h"
-#include "gc9a01a_internal.h"
+#include "gc9a01.h"
+#include "gc9a01_internal.h"
 
 #define ENABLE_DEBUG 0
 #include "debug.h"
 
 /* Datasheet page 168, formula from table (assumes vrh = 0x28)
  * vreg1a in 1mv increments: 4850 = 4.85V */
-static uint8_t _gc9a01a_calc_pwrctl2(uint16_t vreg1a)
+static uint8_t _gc9a01_calc_pwrctl2(uint16_t vreg1a)
 {
     return (vreg1a - 4800) / 20;
 }
 
 /* Datasheet page 169, formula from table (assumes vrh = 0x28)
  * vreg1a in 1mv increments: -4850 = -4.85V */
-static uint8_t _gc9a01a_calc_pwrctl3(int16_t vreg2a)
+static uint8_t _gc9a01_calc_pwrctl3(int16_t vreg2a)
 {
     return (vreg2a + 4200) / 20;
 }
 
-static void _gc9a01a_send_cmds(lcd_t *dev, const uint8_t *cmds)
+static void _gc9a01_send_cmds(lcd_t *dev, const uint8_t *cmds)
 {
     uint8_t cmd;
     uint8_t numArgs;
@@ -82,12 +82,12 @@ static int _init(lcd_t *dev, const lcd_params_t *params)
     ztimer_sleep(ZTIMER_MSEC, 120);
 
     /* Set pixel format to 16 bit RGB & Control */
-    command_params[0] = GC9A01A_16_BIT_FORMAT;
+    command_params[0] = GC9A01_16_BIT_FORMAT;
     lcd_ll_write_cmd(dev, LCD_CMD_COLMOD, command_params, 1);
 
     /* Set Inter_command to high */
-    lcd_ll_write_cmd(dev, GC9A01A_REG_INREGEN1, NULL, 0);
-    lcd_ll_write_cmd(dev, GC9A01A_REG_INREGEN2, NULL, 0);
+    lcd_ll_write_cmd(dev, GC9A01_REG_INREGEN1, NULL, 0);
+    lcd_ll_write_cmd(dev, GC9A01_REG_INREGEN2, NULL, 0);
 
     {
         uint8_t commands[] = {
@@ -109,16 +109,16 @@ static int _init(lcd_t *dev, const lcd_params_t *params)
             0x0  /* End of list */
         };
 
-        _gc9a01a_send_cmds(dev, commands);
+        _gc9a01_send_cmds(dev, commands);
     }
 
     /* Power Control 2/3/4 */
-    command_params[0] = _gc9a01a_calc_pwrctl2(CONFIG_GC9A01A_VREG1A);
-    lcd_ll_write_cmd(dev, GC9A01A_REG_POWER2, command_params, 1);
-    command_params[0] = _gc9a01a_calc_pwrctl3(CONFIG_GC9A01A_VREG2A);
-    lcd_ll_write_cmd(dev, GC9A01A_REG_POWER3, command_params, 1);
-    command_params[0] = GC9A01A_VRH_DEFAULT;
-    lcd_ll_write_cmd(dev, GC9A01A_REG_POWER4, command_params, 1);
+    command_params[0] = _gc9a01_calc_pwrctl2(CONFIG_GC9A01_VREG1A);
+    lcd_ll_write_cmd(dev, GC9A01_REG_POWER2, command_params, 1);
+    command_params[0] = _gc9a01_calc_pwrctl3(CONFIG_GC9A01_VREG2A);
+    lcd_ll_write_cmd(dev, GC9A01_REG_POWER3, command_params, 1);
+    command_params[0] = GC9A01_VRH_DEFAULT;
+    lcd_ll_write_cmd(dev, GC9A01_REG_POWER4, command_params, 1);
 
     {
         uint8_t commands[] = {
@@ -127,10 +127,10 @@ static int _init(lcd_t *dev, const lcd_params_t *params)
             0xDF, 3, 0x21, 0x0C, 0x02,
 
             /* Gamma correction */
-            GC9A01A_REG_GAMMA1, 6, 0x45, 0x09, 0x08, 0x08, 0x26, 0x2A,
-            GC9A01A_REG_GAMMA2, 6, 0x43, 0x70, 0x72, 0x36, 0x37, 0x6F,
-            GC9A01A_REG_GAMMA3, 6, 0x45, 0x09, 0x08, 0x08, 0x26, 0x2A,
-            GC9A01A_REG_GAMMA4, 6, 0x43, 0x70, 0x72, 0x36, 0x37, 0x6F,
+            GC9A01_REG_GAMMA1, 6, 0x45, 0x09, 0x08, 0x08, 0x26, 0x2A,
+            GC9A01_REG_GAMMA2, 6, 0x43, 0x70, 0x72, 0x36, 0x37, 0x6F,
+            GC9A01_REG_GAMMA3, 6, 0x45, 0x09, 0x08, 0x08, 0x26, 0x2A,
+            GC9A01_REG_GAMMA4, 6, 0x43, 0x70, 0x72, 0x36, 0x37, 0x6F,
 
             0xED, 2, 0x1B, 0x0B,
             0xAE, 1, 0x77,
@@ -138,7 +138,7 @@ static int _init(lcd_t *dev, const lcd_params_t *params)
             0x70, 9, 0x07, 0x07, 0x04, 0x0E, 0x0F, 0x09, 0x07, 0x08, 0x03,
 
             /* 4 dot inversion */
-            GC9A01A_REG_FRAMERATE, 1, GC9A01A_FRAMERATE_4DOT_INVERSION,
+            GC9A01_REG_FRAMERATE, 1, GC9A01_FRAMERATE_4DOT_INVERSION,
 
             0x60, 8, 0x38, 0x0B, 0x6D, 0x6D, 0x39, 0xF0, 0x6D, 0x6D,
             0x61, 8, 0x38, 0xF4, 0x6D, 0x6D, 0x38, 0xF7, 0x6D, 0x6D,
@@ -158,7 +158,7 @@ static int _init(lcd_t *dev, const lcd_params_t *params)
             0x0  /* End of list */
         };
 
-        _gc9a01a_send_cmds(dev, commands);
+        _gc9a01_send_cmds(dev, commands);
     }
 
     /* Set rotation and color order */
@@ -181,7 +181,7 @@ static int _init(lcd_t *dev, const lcd_params_t *params)
     return 0;
 }
 
-const lcd_driver_t lcd_gc9a01a_driver = {
+const lcd_driver_t lcd_gc9a01_driver = {
     .init = _init,
     .set_area = NULL, /* default implementation is used */
 };

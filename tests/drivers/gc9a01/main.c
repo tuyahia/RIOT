@@ -9,7 +9,7 @@
  * @{
  *
  * @file
- * @brief       Test application for the GC9A01A LCD driver
+ * @brief       Test application for the GC9A01 LCD driver
  *
  * @author      Koen Zandberg <koen@bergzand.net>
  * @author      Yahia Abdella <yahia.abdella@tuhh.de>
@@ -24,15 +24,15 @@
 #include "ztimer.h"
 #include "riot_logo.h"
 #include "lcd.h"
-#include "gc9a01a.h"
-#include "gc9a01a_params.h"
+#include "gc9a01.h"
+#include "gc9a01_params.h"
 
 int main(void)
 {
     lcd_t dev;
-    dev.driver = &lcd_gc9a01a_driver;
+    dev.driver = &lcd_gc9a01_driver;
 
-    puts("GC9A01A display test application");
+    puts("GC9A01 display test application");
 
     /* initialize the sensor */
     printf("Initializing display...");
@@ -42,7 +42,7 @@ int main(void)
     BACKLIGHT_ON;
 #endif
 
-    if (lcd_init(&dev, &gc9a01a_params[0]) == 0) {
+    if (lcd_init(&dev, &gc9a01_params[0]) == 0) {
         puts("[OK]");
     }
     else {
