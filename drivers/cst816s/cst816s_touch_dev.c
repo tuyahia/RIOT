@@ -68,7 +68,7 @@ uint8_t _cst816s_touches(const touch_dev_t *touch_dev, touch_t *touches, size_t 
     if (cst816s_read(dev, &data) < 0) {
         return 0;   /* No data from device, assume no touch points */
     }
-    uint8_t ret = data.points;
+    uint8_t ret = (data.valid ? 1 : 0);
 
     if (ret && touches != NULL) {
         touches[0].x = data.x;

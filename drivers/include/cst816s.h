@@ -90,8 +90,8 @@ extern const char *cst816s_gesture_str[];
  * @brief cst816s touch event data
  */
 typedef struct {
+    bool valid;                 /**< Sample contains valid touch point */
     cst816s_gesture_t gesture;  /**< Detected gesture */
-    uint8_t points;             /**< Number of touch points (0 or 1) */
     cst816s_touch_t action;     /**< Press or release event */
     uint16_t x;                 /**< X coordinate */
     uint16_t y;                 /**< Y coordinate */
