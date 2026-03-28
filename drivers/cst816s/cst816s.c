@@ -30,19 +30,20 @@
 #include "debug.h"
 
 const char *cst816s_gesture_str[] = {
-    [CST816S_GESTURE_NONE]         = "none",
-    [CST816S_GESTURE_SLIDE_DOWN]   = "slide down",
-    [CST816S_GESTURE_SLIDE_UP]     = "slide up",
-    [CST816S_GESTURE_SLIDE_LEFT]   = "slide left",
-    [CST816S_GESTURE_SLIDE_RIGHT]  = "slide right",
+    [CST816S_GESTURE_NONE] = "none",
+    [CST816S_GESTURE_SLIDE_DOWN] = "slide down",
+    [CST816S_GESTURE_SLIDE_UP] = "slide up",
+    [CST816S_GESTURE_SLIDE_LEFT] = "slide left",
+    [CST816S_GESTURE_SLIDE_RIGHT] = "slide right",
     [CST816S_GESTURE_SINGLE_CLICK] = "single click",
     [CST816S_GESTURE_DOUBLE_CLICK] = "double click",
-    [CST816S_GESTURE_LONG_PRESS]   = "long press",
+    [CST816S_GESTURE_LONG_PRESS] = "long press",
 };
 
 static void _gpio_irq(void *arg)
 {
     cst816s_t *dev = arg;
+
     assert(dev);
 
     if (dev->cb) {

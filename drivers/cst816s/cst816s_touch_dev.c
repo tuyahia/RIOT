@@ -42,6 +42,7 @@
 static uint16_t _cst816s_height(const touch_dev_t *touch_dev)
 {
     const cst816s_t *dev = (const cst816s_t *)touch_dev;
+
     assert(dev);
     (void)dev;  /* avoid compilation problems with NDEBUG */
 
@@ -51,6 +52,7 @@ static uint16_t _cst816s_height(const touch_dev_t *touch_dev)
 static uint16_t _cst816s_width(const touch_dev_t *touch_dev)
 {
     const cst816s_t *dev = (const cst816s_t *)touch_dev;
+
     assert(dev);
     (void)dev;  /* avoid compilation problems with NDEBUG */
 
@@ -85,6 +87,7 @@ uint8_t _cst816s_touches(const touch_dev_t *touch_dev, touch_t *touches, size_t 
 void _cst816s_set_event_callback(const touch_dev_t *touch_dev, touch_event_cb_t cb, void *arg)
 {
     cst816s_t *dev = (cst816s_t *)touch_dev;
+
     assert(dev);
 
     dev->cb = (cst816s_irq_cb_t)cb;
@@ -92,8 +95,8 @@ void _cst816s_set_event_callback(const touch_dev_t *touch_dev, touch_event_cb_t 
 }
 
 const touch_dev_driver_t cst816s_touch_dev_driver = {
-    .height     = _cst816s_height,
-    .width      = _cst816s_width,
-    .touches    = _cst816s_touches,
+    .height = _cst816s_height,
+    .width = _cst816s_width,
+    .touches = _cst816s_touches,
     .set_event_callback = _cst816s_set_event_callback,
 };
