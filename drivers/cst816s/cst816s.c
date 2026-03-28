@@ -74,7 +74,7 @@ int cst816s_read(const cst816s_t *dev, cst816s_touch_data_t *data)
     }
 
     data->gesture = buf[1];                         /* Gesture ID */
-    data->valid = buf[2] > 0;      /* Number of touch points */
+    data->valid = buf[2] > 0;                       /* Number of touch points */
     data->action = buf[3] >> 6;                     /* Current touch event */
     data->x = ((buf[3] & 0x0f) << 8) | buf[4];      /* X coordinate */
     data->y = ((buf[5] & 0x0f) << 8) | buf[6];      /* Y coordinate */
