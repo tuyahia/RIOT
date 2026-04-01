@@ -171,6 +171,7 @@ int qmi8658_init(qmi8658_t *dev, const qmi8658_params_t *params);
  * @param[in]   mode        New mode
  *
  * @retval  0 on success
+ * @retval  -EPERM if driver was never initialized
  * @retval  -EINVAL if invalid mode is given
  * @retval  -EIO on i2c communication error
  */

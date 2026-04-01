@@ -44,6 +44,8 @@ static const int16_t range_acc[] = { 2000, 4000, 8000, 16000 };
  */
 static const int16_t range_gyro[] = { 160, 320, 640, 1280, 2560, 5120, 10240, 20480 };
 
+static bool _initialized = false;
+
 /* Forward declarations */
 static int _qmi8658_read_sensor(const qmi8658_t *dev, qmi8658_3d_data_t *data,
                                 qmi8658_sensor_id_t sensor);
@@ -104,6 +106,7 @@ int qmi8658_init(qmi8658_t *dev, const qmi8658_params_t *params)
         return -EIO;
     }
 
+    _initialized = true;
     LOG_INFO("qmi8658_init(): QMI8658 initialized.\n");
 
     return 0;
@@ -112,6 +115,10 @@ int qmi8658_init(qmi8658_t *dev, const qmi8658_params_t *params)
 int qmi8658_set_mode(const qmi8658_t *dev, qmi8658_mode_t mode)
 {
     assert(dev);
+
+    if (!_initialized) {
+        return -EPERM;
+    }
 
     DEBUG("[LOG] qmi8658_set_mode: mode = %i\n", mode);
 
