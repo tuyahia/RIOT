@@ -55,6 +55,43 @@ extern "C" {
 #  define QMI8658_PARAM_GYRO_FS             QMI8658_GYRO_FS_256DPS
 #endif
 
+/**
+* @brief    Tap detection parameters
+*           See datasheet section 10 for a detailed description of all the parameters.
+* @note     Parameters given in time are converted to samples based on the configured
+            accelerometer ODR in normal mode (not low power mode!).
+* @{
+*/
+/** PeakWindow in ms */
+#ifndef QMI8658_PARAM_TAP_PEAKWIN
+#  define QMI8658_PARAM_TAP_PEAKWIN         20
+#endif
+/** TapWindow in ms */
+#ifndef QMI8658_PARAM_TAP_TAPWIN
+#  define QMI8658_PARAM_TAP_TAPWIN          50
+#endif
+/** DTapWindow in ms */
+#ifndef QMI8658_PARAM_TAP_DTAPWIN
+#  define QMI8658_PARAM_TAP_DTAPWIN         250
+#endif
+/** Alpha ratio * 10000 */
+#ifndef QMI8658_PARAM_TAP_ALPHA
+#  define QMI8658_PARAM_TAP_ALPHA           625
+#endif
+/** Gamma ratio * 10000 */
+#ifndef QMI8658_PARAM_TAP_GAMMA
+#  define QMI8658_PARAM_TAP_GAMMA           2500
+#endif
+/** PeakMagThr in mg^2 */
+#ifndef QMI8658_PARAM_TAP_PEAKMAGTHR
+#  define QMI8658_PARAM_TAP_PEAKMAGTHR      800
+#endif
+/** UDMThr in mg */
+#ifndef QMI8658_PARAM_TAP_UDMTHR
+#  define QMI8658_PARAM_TAP_UDMTHR          400
+#endif
+/**@}*/
+
 #ifndef QMI8658_PARAMS
 /** Configuration parameter set */
 #  define QMI8658_PARAMS      {   .i2c = QMI8658_PARAM_I2C,            \

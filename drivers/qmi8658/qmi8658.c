@@ -22,6 +22,7 @@
 #include "ztimer.h"
 #include "log.h"
 #include "qmi8658.h"
+#include "qmi8658_params.h"
 #include "qmi8658_constants.h"
 
 #define ENABLE_DEBUG 0
@@ -47,12 +48,38 @@ static const int16_t range_acc[] = { 2000, 4000, 8000, 16000 };
  */
 static const int16_t range_gyro[] = { 160, 320, 640, 1280, 2560, 5120, 10240, 20480 };
 
+/*
+ * order in array [0, 1, 2, 3, 4, 5, 6, 7, 8] is
+ * QMI8658_DATA_RATE_8KHZ, QMI8658_DATA_RATE_4KHZ, QMI8658_DATA_RATE_2KHZ, QMI8658_DATA_RATE_1KHZ,
+ * QMI8658_DATA_RATE_500HZ, QMI8658_DATA_RATE_250HZ, QMI8658_DATA_RATE_125HZ,
+ * QMI8658_DATA_RATE_62_5HZ, QMI8658_DATA_RATE_31_25HZ
+ */
+static const int16_t odrs[] = { 8000, 4000, 2000, 1000, 500, 250, 125, 63, 31 };
+
 /* Forward declarations */
 static int _qmi8658_read_sensor(const qmi8658_t *dev, qmi8658_3d_data_t *data,
                                 qmi8658_sensor_id_t sensor);
 static int _qmi8658_set_sensors(const qmi8658_t *dev, qmi8658_enable_flag_t sensor_enable_flags);
 static int _qmi8658_write_cal_regs(const qmi8658_t *dev, uint8_t* data);
 static int _qmi8658_ctrl9_cmd(const qmi8658_t *dev, uint8_t cmd);
+
+/* Convert a time in ms to number of samples (based on ACC ODR) */
+static inline uint16_t _qmi8658_ms_to_sample(const qmi8658_t *dev, uint16_t time)
+{
+    return (uint16_t)(((uint32_t)time * odrs[dev->params.acc_odr]) / 1000);
+}
+
+/* Scale tap alpha/gamma ratio to the correct range */
+static inline uint16_t _qmi8658_tap_scale_ratio(uint16_t ratio)
+{
+    return (uint16_t)(((uint32_t)ratio * 128) / 10000);
+}
+
+/* Scale tap threshold to the correct range */
+static inline uint16_t _qmi8658_tap_scale_thr(uint16_t thr)
+{
+    return (uint16_t)(((uint32_t)thr * 1024) / 1000);
+}
 
 int qmi8658_init(qmi8658_t *dev, const qmi8658_params_t *params)
 {
@@ -246,29 +273,45 @@ int qmi8658_enable_tap(const qmi8658_t *dev)
     uint8_t tap_config[8];
 
     /* Disable sensors first */
-    _qmi8658_set_sensors(dev, QMI8658_DISABLE_ALL);
+    res = _qmi8658_set_sensors(dev, QMI8658_DISABLE_ALL);
+    if (res < 0) {
+        DEBUG("[ERROR] qmi8658_enable_tap: Failed to disable sensors\n");
+        return -EIO;
+    }
 
     /* First set of CAL configuration values */
-    tap_config[0] = 40; /* PeakWindow in samples */
-    tap_config[1] = 0; /* Priority axis */
-    tap_config[2] = 100; /* TapWindow in samples (low byte) */
-    tap_config[3] = 0; /* TapWindow in samples (high byte) */
-    tap_config[4] = 250; /* DTapWindow in samples (low byte) */
-    tap_config[5] = 0; /* DTapWindow in samples (high byte) */
-    tap_config[6] = 0; /* N/A */
-    tap_config[7] = 1; /* This is the first command */
+    /* PeakWindow in samples */
+    tap_config[0] = _qmi8658_ms_to_sample(dev, QMI8658_PARAM_TAP_PEAKWIN);
+    /* Priority axis */
+    tap_config[1] = 0;
+    /* TapWindow in samples */
+    uint16_t tap_win = _qmi8658_ms_to_sample(dev, QMI8658_PARAM_TAP_TAPWIN);
+    tap_config[2] = tap_win & 0xFF;
+    tap_config[3] = tap_win >> 8;
+    /* DTapWindow in samples */
+    uint16_t dtap_win = _qmi8658_ms_to_sample(dev, QMI8658_PARAM_TAP_DTAPWIN);
+    tap_config[4] = dtap_win & 0xFF;
+    tap_config[5] = dtap_win >> 8;
+    tap_config[6] = 0;                  /* N/A */
+    tap_config[7] = 0x01;               /* This is the first command */
     res = _qmi8658_write_cal_regs(dev, tap_config);
     res += _qmi8658_ctrl9_cmd(dev, QMI8658_CTRL9_CMD_CONFIG_TAP);
 
     /* Second set of CAL configuration values */
-    tap_config[0] = 8; /* Alpha */
-    tap_config[1] = 32; /* Gamma */
-    tap_config[2] = 0x20; /* PeakMagThr (low byte) */
-    tap_config[3] = 0x03; /* PeakMagThr (high byte) */
-    tap_config[4] = 0x90; /* UDMThr (low byte) */
-    tap_config[5] = 0x01; /* UDMThr (high byte) */
-    tap_config[6] = 0; /* N/A */
-    tap_config[7] = 2; /* This is the second command */
+    /* Alpha */
+    tap_config[0] = _qmi8658_tap_scale_ratio(QMI8658_PARAM_TAP_ALPHA);
+    /* Gamma */
+    tap_config[1] = _qmi8658_tap_scale_ratio(QMI8658_PARAM_TAP_GAMMA);
+    /* PeakMagThr */
+    uint16_t peak_mag_thr = _qmi8658_tap_scale_thr(QMI8658_PARAM_TAP_PEAKMAGTHR);
+    tap_config[2] = peak_mag_thr & 0xFF;
+    tap_config[3] = peak_mag_thr >> 8;
+    /* UDMThr */
+    uint16_t udm_thr = _qmi8658_tap_scale_thr(QMI8658_PARAM_TAP_UDMTHR);
+    tap_config[4] = udm_thr & 0xFF;
+    tap_config[5] = udm_thr >> 8;
+    tap_config[6] = 0;              /* N/A */
+    tap_config[7] = 0x02;           /* This is the second command */
     res += _qmi8658_write_cal_regs(dev, tap_config);
     res += _qmi8658_ctrl9_cmd(dev, QMI8658_CTRL9_CMD_CONFIG_TAP);
 

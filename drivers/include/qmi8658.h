@@ -214,6 +214,8 @@ int qmi8658_set_mode(qmi8658_t *dev, qmi8658_mode_t mode);
  *
  * @note    Tap detection requires accelerometer to be enabled in normal mode
  *          (@ref QMI8658_NORMAL_ACC or @ref QMI8658_NORMAL_ACC_GYRO).
+ *          This function can be called before or after @ref qmi8658_set_mode, tap 
+ *          data is only generated once the the accelerometer is active.
  *          Accelerometer ODR is recommended to be set higher than 200Hz.
  *
  * @param[in]   dev         Device descriptor of the driver
