@@ -64,7 +64,7 @@ extern "C" {
  * @name    QMI8658 CTRL9 protocol commands
  * @{
  */
-#define QMI8658_CTRL9_CMD_ACK           (0x00)  /**< Acknoledge CTRL9 execution */
+#define QMI8658_CTRL9_CMD_ACK           (0x00)  /**< Acknowledge CTRL9 execution */
 #define QMI8658_CTRL9_CMD_CONFIG_TAP    (0x0C)  /**< Configure Tap detection */
 /** @} */
 

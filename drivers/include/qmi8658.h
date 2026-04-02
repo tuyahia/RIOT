@@ -17,6 +17,7 @@
  * This module provides a device driver for the QMI8658 interial measurement unit
  * (IMU) by QST. This driver exposes accelerometer, gyroscope and temperature sensor
  * data in several operating modes of the device (qmi8658_mode_t).
+ * This driver also supports the tap detection feature of the QMI8658.
  *
  * # Configuration
  * This driver is configurable via the parameters in qmi8658_params.h:
@@ -24,13 +25,19 @@
  * - Acceleromter value full scale
  * - Gyroscope output data rate
  * - Gyroscope value full scale
+ * - Tap detection parameters
  *
  * # Usage
- * Use the qmi8658_init() function to initialize the device. This will configure the
- * device but not enable any sensors. Use qmi8658_set_mode() to select an operating
+ * Use the @ref qmi8658_init function to initialize the device. This will configure the
+ * device but not enable any sensors. Use @ref qmi8658_set_mode to select an operating mode
  * for the device, which enables the corresponding sensors in the chosen power mode.
- * Now the sensor values can be polled using the functions qmi8658_read_acc(),
- * qmi8658_read_gyro() and qmi8658_read_temp().
+ * Now the sensor values can be polled using the functions @ref qmi8658_read_acc,
+ * @ref qmi8658_read_gyro and @ref qmi8658_read_temp.
+ * ## Tap detection
+ * Tap detection only works while the accelerometer is enabled. After initializing the device,
+ * tap detection can be enabled with @ref qmi8658_enable_tap. Tap data can then be polled using
+ * @ref qmi8658_read_tap. See qmi8658_tap_data_t for a description of the tap data fields.
+ *
  *
  * @{
  *
@@ -158,10 +165,9 @@ typedef struct {
  * @brief   Device descriptor for the driver
  */
 typedef struct {
-    /** Device initialization parameters */
-    qmi8658_params_t params;
-    qmi8658_enable_flag_t enable_flags;
-    bool initialized;
+    qmi8658_params_t params;            /**< Device initialization parameters */
+    bool initialized;                   /**< Device is initialized */
+    qmi8658_enable_flag_t enable_flags; /**< Currently enabled sensors */
 } qmi8658_t;
 
 /**
@@ -188,8 +194,8 @@ typedef struct {
 /**
  * @brief   Initialize the given device
  *
- * @param[in]    dev        Device descriptor of the driver
- * @param[in]    params     Initialization parameters
+ * @param[inout]    dev        Device descriptor of the driver
+ * @param[in]       params     Initialization parameters
  *
  * @retval  0 on success
  * @retval  -EIO on error
@@ -199,8 +205,8 @@ int qmi8658_init(qmi8658_t *dev, const qmi8658_params_t *params);
 /**
  * @brief   Set the operating mode of the device
  *
- * @param[in]   dev         Device descriptor of the driver
- * @param[in]   mode        New mode
+ * @param[inout]    dev         Device descriptor of the driver
+ * @param[in]       mode        New mode
  *
  * @retval  0 on success
  * @retval  -EPERM if driver was never initialized
@@ -213,9 +219,9 @@ int qmi8658_set_mode(qmi8658_t *dev, qmi8658_mode_t mode);
  * @brief   Enable the tap detection engine
  *
  * @note    Tap detection requires accelerometer to be enabled in normal mode
- *          (@ref QMI8658_NORMAL_ACC or @ref QMI8658_NORMAL_ACC_GYRO).
+ *          (@ref QMI8658_NORMAL_ACC or @ref QMI8658_NORMAL_ACC_GYRO).<br>
  *          This function can be called before or after @ref qmi8658_set_mode, tap
- *          data is only generated once the the accelerometer is active.
+ *          data is only generated once the accelerometer is active.<br>
  *          Accelerometer ODR is recommended to be set higher than 200Hz.
  *
  * @param[in]   dev         Device descriptor of the driver

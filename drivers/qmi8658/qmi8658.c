@@ -565,7 +565,7 @@ static int _qmi8658_ctrl9_cmd(const qmi8658_t *dev, uint8_t cmd)
         ztimer_sleep(ZTIMER_MSEC, 1);
     } while (!(tmp & QMI8658_CTRL9_DONE_MASK));
 
-    /* Acknoledge command execution */
+    /* Acknowledge command execution */
     res = i2c_write_reg(QMI8658_BUS, QMI8658_ADDR, QMI8658_REG_CTRL9, QMI8658_CTRL9_CMD_ACK, 0);
 
     i2c_release(QMI8658_BUS);
