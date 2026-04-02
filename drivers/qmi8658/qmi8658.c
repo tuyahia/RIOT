@@ -60,7 +60,7 @@ static const int16_t odrs[] = { 8000, 4000, 2000, 1000, 500, 250, 125, 63, 31 };
 static int _qmi8658_read_sensor(const qmi8658_t *dev, qmi8658_3d_data_t *data,
                                 qmi8658_sensor_id_t sensor);
 static int _qmi8658_set_sensors(const qmi8658_t *dev, qmi8658_enable_flag_t sensor_enable_flags);
-static int _qmi8658_write_cal_regs(const qmi8658_t *dev, uint8_t* data);
+static int _qmi8658_write_cal_regs(const qmi8658_t *dev, uint8_t *data);
 static int _qmi8658_ctrl9_cmd(const qmi8658_t *dev, uint8_t cmd);
 
 /* Convert a time in ms to number of samples (based on ACC ODR) */
@@ -172,7 +172,7 @@ int qmi8658_set_mode(qmi8658_t *dev, qmi8658_mode_t mode)
     case QMI8658_POWER_DOWN:
         res = i2c_read_reg(QMI8658_BUS, QMI8658_ADDR, QMI8658_REG_CTRL1, &tmp, 0);
         res += i2c_write_reg(QMI8658_BUS, QMI8658_ADDR, QMI8658_REG_CTRL1,
-                            tmp | QMI8658_CTRL1_SENSOR_DISABLE_MASK, 0);
+                             tmp | QMI8658_CTRL1_SENSOR_DISABLE_MASK, 0);
         dev->enable_flags = QMI8658_DISABLE_ALL;
         break;
 
@@ -233,6 +233,8 @@ int qmi8658_set_mode(qmi8658_t *dev, qmi8658_mode_t mode)
         res += i2c_write_reg(QMI8658_BUS, QMI8658_ADDR, QMI8658_REG_CTRL3, reg_ctrl3_value, 0);
     }
 
+    i2c_release(QMI8658_BUS);
+
     /* Filters need 3/ODR seconds to settle (Datasheet section 7.3) */
     if (mode != QMI8658_LOWPWR_ACC) {
         /* Worst case in normal mode is around 100ms at ODR = 31.25Hz */
@@ -242,8 +244,6 @@ int qmi8658_set_mode(qmi8658_t *dev, qmi8658_mode_t mode)
         /* Worst case in low power mode is around 1s at ODR = 3Hz */
         ztimer_sleep(ZTIMER_MSEC, QMI8658_LOWPWR_FILTER_WAIT_MS);
     }
-
-    i2c_release(QMI8658_BUS);
 
     if (res < 0) {
         DEBUG("[ERROR] qmi8658_set_mode: Failed to write sensor settings\n");
@@ -328,7 +328,8 @@ int qmi8658_enable_tap(const qmi8658_t *dev)
     i2c_acquire(QMI8658_BUS);
 
     /* Enable Tap engine */
-    res += i2c_write_reg(QMI8658_BUS, QMI8658_ADDR, QMI8658_REG_CTRL8, QMI8658_CTRL8_TAP_EN_MASK, 0);
+    res += i2c_write_reg(QMI8658_BUS, QMI8658_ADDR, QMI8658_REG_CTRL8, QMI8658_CTRL8_TAP_EN_MASK,
+                         0);
 
     i2c_release(QMI8658_BUS);
 
@@ -486,13 +487,14 @@ static int _qmi8658_read_sensor(const qmi8658_t *dev, qmi8658_3d_data_t *data,
 static int _qmi8658_set_sensors(const qmi8658_t *dev, qmi8658_enable_flag_t sensor_enable_flags)
 {
     int res;
+    uint8_t tmp;
 
     DEBUG("[LOG] _qmi8658_set_sensors: Set sensor enable flags %x\n", sensor_enable_flags);
 
     i2c_acquire(QMI8658_BUS);
 
-    res = i2c_write_reg(QMI8658_BUS, QMI8658_ADDR, QMI8658_REG_CTRL7, sensor_enable_flags & 0x03,
-                        0);
+    res = i2c_read_reg(QMI8658_BUS, QMI8658_ADDR, QMI8658_REG_CTRL7, &tmp, 0);
+    res = i2c_write_reg(QMI8658_BUS, QMI8658_ADDR, QMI8658_REG_CTRL7, tmp | sensor_enable_flags, 0);
 
     i2c_release(QMI8658_BUS);
 
@@ -505,7 +507,7 @@ static int _qmi8658_set_sensors(const qmi8658_t *dev, qmi8658_enable_flag_t sens
 }
 
 /* Set the CAL registers (before CTRL9 command) */
-static int _qmi8658_write_cal_regs(const qmi8658_t *dev, uint8_t* data)
+static int _qmi8658_write_cal_regs(const qmi8658_t *dev, uint8_t *data)
 {
     int res;
 
@@ -528,7 +530,7 @@ static int _qmi8658_ctrl9_cmd(const qmi8658_t *dev, uint8_t cmd)
 {
     int res;
     uint8_t tmp;
-    
+
     i2c_acquire(QMI8658_BUS);
 
     /* Send command */
@@ -556,7 +558,7 @@ static int _qmi8658_ctrl9_cmd(const qmi8658_t *dev, uint8_t cmd)
         }
 
         ztimer_sleep(ZTIMER_MSEC, 1);
-    } while(!(tmp & QMI8658_CTRL9_DONE_MASK));
+    } while (!(tmp & QMI8658_CTRL9_DONE_MASK));
 
     /* Acknoledge command execution */
     res = i2c_write_reg(QMI8658_BUS, QMI8658_ADDR, QMI8658_REG_CTRL9, QMI8658_CTRL9_CMD_ACK, 0);
