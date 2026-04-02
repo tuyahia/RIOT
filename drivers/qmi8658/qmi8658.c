@@ -503,6 +503,11 @@ static int _qmi8658_set_sensors(const qmi8658_t *dev, qmi8658_enable_flag_t sens
         return -EIO;
     }
 
+    /* Wait for sensors to wakeup */
+    ztimer_sleep(ZTIMER_MSEC,
+                 sensor_enable_flags & QMI8658_ENABLE_GYRO ?
+                 QMI8658_GYRO_WAKEUP_MS : QMI8658_ACC_WAKEUP_MS);
+
     return 0;
 }
 

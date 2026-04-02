@@ -108,6 +108,10 @@ extern "C" {
 #define QMI8658_NORMAL_FILTER_WAIT_MS   (100)
 /** Worst case wait time after setting ODR in low power mode */
 #define QMI8658_LOWPWR_FILTER_WAIT_MS   (1000)
+/** Accelerometer wakeup time */
+#define QMI8658_ACC_WAKEUP_MS           (3)
+/** Gyroscope wakeup time */
+#define QMI8658_GYRO_WAKEUP_MS          (150)
 /** CTRL9 command timeout */
 #define QMI8658_CTRL9_TIMEOUT_MS        (1000)
 /** @} */
