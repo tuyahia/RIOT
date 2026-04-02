@@ -129,6 +129,7 @@ int qmi8658_set_mode(qmi8658_t *dev, qmi8658_mode_t mode)
 
     uint8_t reg_ctrl2_value = 0;
     uint8_t reg_ctrl3_value = 0;
+    uint8_t tmp;
     int res = 0;
 
     /* Disable sensors first */
@@ -142,8 +143,9 @@ int qmi8658_set_mode(qmi8658_t *dev, qmi8658_mode_t mode)
 
     switch (mode) {
     case QMI8658_POWER_DOWN:
-        res = i2c_write_reg(QMI8658_BUS, QMI8658_ADDR, QMI8658_REG_CTRL1,
-                            QMI8658_CTRL1_SENSOR_DISABLE_MASK, 0);
+        res = i2c_read_reg(QMI8658_BUS, QMI8658_ADDR, QMI8658_REG_CTRL1, &tmp, 0);
+        res += i2c_write_reg(QMI8658_BUS, QMI8658_ADDR, QMI8658_REG_CTRL1,
+                            tmp | QMI8658_CTRL1_SENSOR_DISABLE_MASK, 0);
         dev->enable_flags = QMI8658_DISABLE_ALL;
         break;
 
@@ -193,8 +195,9 @@ int qmi8658_set_mode(qmi8658_t *dev, qmi8658_mode_t mode)
 
     if (mode != QMI8658_POWER_DOWN) {
         /* Clear sensor disable */
+        res = i2c_read_reg(QMI8658_BUS, QMI8658_ADDR, QMI8658_REG_CTRL1, &tmp, 0);
         res += i2c_write_reg(QMI8658_BUS, QMI8658_ADDR, QMI8658_REG_CTRL1,
-                             QMI8658_CTRL1_ADDR_AI_MASK, 0);
+                             tmp & (~QMI8658_CTRL1_SENSOR_DISABLE_MASK), 0);
     }
     if (reg_ctrl2_value != 0) {
         res += i2c_write_reg(QMI8658_BUS, QMI8658_ADDR, QMI8658_REG_CTRL2, reg_ctrl2_value, 0);
