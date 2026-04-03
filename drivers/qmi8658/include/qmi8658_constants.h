@@ -29,7 +29,11 @@ extern "C" {
 #define QMI8658_REG_CTRL2           (0x03)      /**< Accelerometer settings */
 #define QMI8658_REG_CTRL3           (0x04)      /**< Gyroscope settings */
 #define QMI8658_REG_CTRL7           (0x08)      /**< Sensor enable register */
+#define QMI8658_REG_CTRL8           (0x09)      /**< Motion detection enable register */
+#define QMI8658_REG_CTRL9           (0x0A)      /**< Predefined host command */
+#define QMI8658_REG_STATUSINT       (0x2D)      /**< CTRL9 command status */
 #define QMI8658_REG_STATUS0         (0x2E)      /**< Output data status register */
+#define QMI8658_REG_STATUS1         (0x2F)      /**< Miscellaneous status register */
 #define QMI8658_REG_TEMP_L          (0x33)      /**< Temperature data output (low byte) */
 #define QMI8658_REG_TEMP_H          (0x34)      /**< Temperature data output (high byte) */
 #define QMI8658_REG_AX_L            (0x35)      /**< X-axis acceleration data (low byte) */
@@ -44,6 +48,8 @@ extern "C" {
 #define QMI8658_REG_GY_H            (0x3E)      /**< Y-axis angular rate data (high byte) */
 #define QMI8658_REG_GZ_L            (0x3F)      /**< Z-axis angular rate data (low byte) */
 #define QMI8658_REG_GZ_H            (0x40)      /**< Z-axis angular rate data (high byte) */
+#define QMI8658_REG_TAP_STATUS      (0x59)      /**< Tap engine status */
+#define QMI8658_REG_CAL1_L          (0x0B)      /**< First CAL register */
 /** @} */
 
 /**
@@ -52,6 +58,14 @@ extern "C" {
  */
 #define QMI8658_RESET_VALUE         (0xB0)  /**< Value in register 0x4D after successful reset */
 #define QMI8658_WHO_AM_I_VALUE      (0x05)  /**< Expected device identifier */
+/** @} */
+
+/**
+ * @name    QMI8658 CTRL9 protocol commands
+ * @{
+ */
+#define QMI8658_CTRL9_CMD_ACK           (0x00)  /**< Acknowledge CTRL9 execution */
+#define QMI8658_CTRL9_CMD_CONFIG_TAP    (0x0C)  /**< Configure Tap detection */
 /** @} */
 
 /**
@@ -64,12 +78,24 @@ extern "C" {
 #define QMI8658_CTRL1_ADDR_AI_MASK          (1 << 6)
 /** SensorDisable bit in CTRL1 */
 #define QMI8658_CTRL1_SENSOR_DISABLE_MASK   (1 << 0)
+/** Tap_EN bit in CTRL8 */
+#define QMI8658_CTRL8_TAP_EN_MASK           (1 << 0)
 /** Accelerometer data status bit in STATUS0 */
 #define QMI8658_STATUS0_ACC_MASK            (1 << 0)
 /** Gyroscope data status bit in STATUS0 */
 #define QMI8658_STATUS0_GYRO_MASK           (1 << 1)
+/** Tap data status bit in STATUS1 */
+#define QMI8658_STATUS1_TAP_MASK            (1 << 1)
 /** Scale factor of raw temperature data */
 #define QMI8658_TEMP_SCALE_FACTOR           (256)
+/** Shift tap number bits in TAP_STATUS */
+#define QMI8658_TAP_NUM_SHIFT               (0)
+/** Shift of tap axis bits in TAP_STATUS */
+#define QMI8658_TAP_AXIS_SHIFT              (4)
+/** Shift of tap polarity bit in TAP_STATUS */
+#define QMI8658_TAP_POLARITY_SHIFT          (7)
+/** CTRL9 command done bit in STATUSINT */
+#define QMI8658_CTRL9_DONE_MASK             (1 << 7)
 /** @} */
 
 /**
@@ -82,6 +108,12 @@ extern "C" {
 #define QMI8658_NORMAL_FILTER_WAIT_MS   (100)
 /** Worst case wait time after setting ODR in low power mode */
 #define QMI8658_LOWPWR_FILTER_WAIT_MS   (1000)
+/** Accelerometer wakeup time */
+#define QMI8658_ACC_WAKEUP_MS           (3)
+/** Gyroscope wakeup time */
+#define QMI8658_GYRO_WAKEUP_MS          (150)
+/** CTRL9 command timeout */
+#define QMI8658_CTRL9_TIMEOUT_MS        (1000)
 /** @} */
 
 /**
@@ -91,15 +123,6 @@ typedef enum {
     QMI8658_SENSOR_ACC = 0,
     QMI8658_SENSOR_GYRO
 } qmi8658_sensor_id_t;
-
-/**
- * @brief   Enable sensor flags
- */
-typedef enum {
-    QMI8658_DISABLE_ALL = 0,
-    QMI8658_ENABLE_ACC  = 1,
-    QMI8658_ENABLE_GYRO = 2
-} qmi8658_enable_flag_t;
 
 #ifdef __cplusplus
 }
