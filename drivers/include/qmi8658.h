@@ -134,9 +134,9 @@ typedef enum {
  * @brief   QMI8658 axis identifiers
  */
 typedef enum {
-    QMI8658_X_AXIS,             /**< Sensor X axis */
-    QMI8658_Y_AXIS,             /**< Sensor Y axis */
-    QMI8658_Z_AXIS,             /**< Sensor Z axis */
+    QMI8658_X_AXIS = 1,         /**< Sensor X axis */
+    QMI8658_Y_AXIS = 2,         /**< Sensor Y axis */
+    QMI8658_Z_AXIS = 3,         /**< Sensor Z axis */
 } qmi8658_axis_t;
 
 /**
