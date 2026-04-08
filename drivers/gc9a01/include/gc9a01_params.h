@@ -136,7 +136,7 @@ extern "C" {
  * @note The default parameter set defined here can only be used if a single
  *       GC9A01 display and only one interface mode is used. If multiple
  *       GC9A01 displays are used or if multiple interface modes are enabled
- *       by the modules `lcd_spi`, lcd_parallel and `lcd_parallel_16bit`, a user
+ *       by the modules `lcd_spi`, `lcd_parallel` and `lcd_parallel_16bit`, a user
  *       defined parameter set @ref GC9A01_PARAMS has to be defined. In the
  *       latter case @ref lcd_params_t::spi must then be set to @ref SPI_UNDEF
  *       for displays with MCU 8080 8-/16-bit parallel interfaces.

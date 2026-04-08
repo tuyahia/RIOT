@@ -27,10 +27,10 @@
 #include "gc9a01_params.h"
 
 #ifndef GC9A01_NUMOF
-#define GC9A01_NUMOF               0
+#  define GC9A01_NUMOF             0
 #endif
 #ifndef GC9A01_SCREEN_NUMOF
-#define GC9A01_SCREEN_NUMOF        0
+#  define GC9A01_SCREEN_NUMOF      0
 #endif
 
 static gc9a01_t gc9a01_devs[GC9A01_NUMOF];

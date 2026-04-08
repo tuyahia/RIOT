@@ -48,7 +48,7 @@ extern "C" {
  * VREG1A should be between 4.8 V and 7.34 V .
  */
 #ifndef CONFIG_GC9A01_VREG1A
-#define CONFIG_GC9A01_VREG1A             (5340)
+#  define CONFIG_GC9A01_VREG1A           (5340)
 #endif
 
 /**
@@ -58,7 +58,7 @@ extern "C" {
  * VREG2A should be between -4.2 V and -1.66 V .
  */
 #ifndef CONFIG_GC9A01_VREG2A
-#define CONFIG_GC9A01_VREG2A            (-3980)
+#  define CONFIG_GC9A01_VREG2A          (-3980)
 #endif
 /** @} */
 
