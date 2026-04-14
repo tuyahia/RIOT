@@ -1,5 +1,5 @@
 /*
- * SPDX-FileCopyrightText: 2026 Technische Universität Hamburg
+ * SPDX-FileCopyrightText: 2020 Inria
  * SPDX-License-Identifier: LGPL-2.1-only
  */
 
@@ -9,7 +9,7 @@
  * @file
  * @brief       initializes lcd display device
  *
- * @author      Yahia Abdella <yahia.abdella@tuhh.de>
+ * @author      Alexandre Abadie <alexandre.abadie@inria.fr>
  * @}
  */
 

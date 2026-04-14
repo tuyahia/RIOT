@@ -1,4 +1,5 @@
 /*
+ * SPDX-FileCopyrightText: 2018 Koen Zandberg <koen@bergzand.net>
  * SPDX-FileCopyrightText: 2026 Technische Universität Hamburg
  * SPDX-License-Identifier: LGPL-2.1-only
  */
@@ -12,6 +13,7 @@
  * @file
  * @brief       Default configuration
  *
+ * @author      Koen Zandberg <koen@bergzand.net>
  * @author      Yahia Abdella <yahia.abdella@tuhh.de>
  */
 

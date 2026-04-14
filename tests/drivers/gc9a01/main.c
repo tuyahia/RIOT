@@ -1,6 +1,5 @@
 /*
  * SPDX-FileCopyrightText: 2018 Koen Zandberg <koen@bergzand.net>
- * SPDX-FileCopyrightText: 2026 Technische Universität Hamburg
  * SPDX-License-Identifier: LGPL-2.1-only
  */
 
@@ -12,7 +11,6 @@
  * @brief       Test application for the GC9A01 LCD driver
  *
  * @author      Koen Zandberg <koen@bergzand.net>
- * @author      Yahia Abdella <yahia.abdella@tuhh.de>
  *
  * @}
  */
