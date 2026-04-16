@@ -20,9 +20,31 @@
  *   module `lcd_parallel_16` is enabled).
  *
  * # Usage
- * After configuring the driver in a board definition via the parameters in
- * gc9a01_params.h (or accepting the default configuration), the driver can be used
- * with the generic LCD API (@ref drivers_lcd). See tests/drivers/gc9a01 for a usage example.
+ * The driver can be configured by redefining the default parameters from the
+ * `gc9a01_params.h` header. For new or custom boards, the best place for this
+ * configuration is the board definition header `board.h`.
+ * For example, to enable the global color inversion, you can add the following
+ * line:
+ * 
+ * ```c
+ * #define GC9A01_PARAM_INVERTED 1
+ * ```
+ *
+ * For applications using the display with e.g. a development board, you can
+ * also define the parameters through `CFLAGS` in your application's `Makefile`.
+ * For example, to set the Chip Select pin, you can add the following line:
+ *
+ * ```makefile
+ * CFLAGS += -DGC9A01_PARAM_CS="GPIO_PIN(1,1)"
+ * ```
+ *
+ * @note The SPI pins are defined by the selected SPI controller. The default
+ *       is `SPI_DEV(0)`. You can find the according pin definitions for the
+ *       SPI controller in your board's `periph_conf.h` header.
+ *
+ * After configuring the driver, it can be used
+ * with the generic LCD API (@ref drivers_lcd). See `tests/drivers/gc9a01`
+ * for an example application.
  *
  * @{
  *
