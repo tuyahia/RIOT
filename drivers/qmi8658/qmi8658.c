@@ -270,6 +270,7 @@ int qmi8658_enable_tap(const qmi8658_t *dev)
     }
 
     int res;
+    uint8_t tmp;
     uint8_t tap_config[8];
 
     /* Disable sensors first */
@@ -282,8 +283,8 @@ int qmi8658_enable_tap(const qmi8658_t *dev)
     /* First set of CAL configuration values */
     /* PeakWindow in samples */
     tap_config[0] = _qmi8658_ms_to_sample(dev, QMI8658_PARAM_TAP_PEAKWIN);
-    /* Priority axis */
-    tap_config[1] = 0;
+    /* Tap axis priority */
+    tap_config[1] = QMI8658_PARAM_TAP_PRIORITY;
     /* TapWindow in samples */
     uint16_t tap_win = _qmi8658_ms_to_sample(dev, QMI8658_PARAM_TAP_TAPWIN);
     tap_config[2] = tap_win & 0xFF;
@@ -328,13 +329,38 @@ int qmi8658_enable_tap(const qmi8658_t *dev)
     i2c_acquire(QMI8658_BUS);
 
     /* Enable Tap engine */
-    res += i2c_write_reg(QMI8658_BUS, QMI8658_ADDR, QMI8658_REG_CTRL8, QMI8658_CTRL8_TAP_EN_MASK,
-                         0);
+    res += i2c_read_reg(QMI8658_BUS, QMI8658_ADDR, QMI8658_REG_CTRL8, &tmp, 0);
+    res += i2c_write_reg(QMI8658_BUS, QMI8658_ADDR, QMI8658_REG_CTRL8,
+                         tmp | QMI8658_CTRL8_TAP_EN_MASK, 0);
 
     i2c_release(QMI8658_BUS);
 
     if (res < 0) {
         DEBUG("[ERROR] qmi8658_enable_tap: Failed to enable Tap detection\n");
+        return -EIO;
+    }
+
+    return 0;
+}
+
+int qmi8658_disable_tap(const qmi8658_t *dev)
+{
+    assert(dev);
+
+    int res;
+    uint8_t tmp;
+
+    i2c_acquire(QMI8658_BUS);
+
+    /* Disable Tap engine */
+    res = i2c_read_reg(QMI8658_BUS, QMI8658_ADDR, QMI8658_REG_CTRL8, &tmp, 0);
+    res += i2c_write_reg(QMI8658_BUS, QMI8658_ADDR, QMI8658_REG_CTRL8,
+                         tmp & (~QMI8658_CTRL8_TAP_EN_MASK), 0);
+
+    i2c_release(QMI8658_BUS);
+
+    if (res < 0) {
+        DEBUG("[ERROR] qmi8658_disable_tap: Failed to disable Tap detection\n");
         return -EIO;
     }
 

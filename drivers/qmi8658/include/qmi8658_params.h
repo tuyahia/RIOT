@@ -56,12 +56,16 @@ extern "C" {
 #endif
 
 /**
- * @name    Tap detection parameters<br>
+ * @name    Tap detection parameters
  * @brief   See datasheet section 10 for a detailed description of all the parameters.
  * @note    Parameters given in time are converted to samples based on the configured
             accelerometer ODR in normal mode (not low power mode!).
  * @{
  */
+/** Axis priority */
+#ifndef QMI8658_PARAM_TAP_PRIORITY
+#  define QMI8658_PARAM_TAP_PRIORITY        QMI8658_TAP_PRIO_ZXY
+#endif
 /** PeakWindow in ms */
 #ifndef QMI8658_PARAM_TAP_PEAKWIN
 #  define QMI8658_PARAM_TAP_PEAKWIN         20

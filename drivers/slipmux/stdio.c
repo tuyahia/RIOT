@@ -1,9 +1,6 @@
 /*
- * Copyright (C) 2018 Freie Universität Berlin
- *
- * This file is subject to the terms and conditions of the GNU Lesser
- * General Public License v2.1. See the file LICENSE in the top level
- * directory for more details.
+ * SPDX-FileCopyrightText: 2018 Freie Universität Berlin
+ * SPDX-License-Identifier: LGPL-2.1-only
  */
 
 /**
@@ -24,6 +21,20 @@
 #include "stdio_base.h"
 #include "stdio_uart.h"
 
+static inline void _slipdev_lock(void)
+{
+    if (IS_USED(MODULE_SLIPDEV_CONFIG) || IS_USED(MODULE_SLIPDEV_NET)) {
+        mutex_lock(&slipdev_mutex);
+    }
+}
+
+static inline void _slipdev_unlock(void)
+{
+    if (IS_USED(MODULE_SLIPDEV_CONFIG) || IS_USED(MODULE_SLIPDEV_NET)) {
+        mutex_unlock(&slipdev_mutex);
+    }
+}
+
 static void _isrpipe_write(void *arg, uint8_t data)
 {
     isrpipe_write_one(arg, (char)data);
@@ -41,11 +52,11 @@ static void _init(void)
 
 static ssize_t _write(const void *buffer, size_t len)
 {
-    mutex_lock(&slipdev_mutex);
+    _slipdev_lock();
     slipdev_write_byte(slipdev_params[0].uart, SLIPDEV_START_STDIO);
     slipdev_write_bytes(slipdev_params[0].uart, buffer, len);
     slipdev_write_byte(slipdev_params[0].uart, SLIPDEV_END);
-    mutex_unlock(&slipdev_mutex);
+    _slipdev_unlock();
     return len;
 }
 
