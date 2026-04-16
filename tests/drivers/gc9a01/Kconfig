@@ -1,4 +1,4 @@
-# SPDX-FileCopyrightText: 2026 Technische Universität Hamburg
+# SPDX-FileCopyrightText: 2021 HAW Hamburg
 # SPDX-License-Identifier: LGPL-2.1-only
 
 config NO_RIOT_IMAGE

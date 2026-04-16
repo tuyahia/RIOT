@@ -1,5 +1,5 @@
 /*
- * SPDX-FileCopyrightText: 2026 Technische Universität Hamburg
+ * SPDX-FileCopyrightText: 2020 Inria
  * SPDX-License-Identifier: LGPL-2.1-only
  */
 
@@ -9,7 +9,7 @@
  * @file
  * @brief       initializes lcd display device
  *
- * @author      Yahia Abdella <yahia.abdella@tuhh.de>
+ * @author      Alexandre Abadie <alexandre.abadie@inria.fr>
  * @}
  */
 
@@ -27,10 +27,10 @@
 #include "gc9a01_params.h"
 
 #ifndef GC9A01_NUMOF
-#define GC9A01_NUMOF               0
+#  define GC9A01_NUMOF             0
 #endif
 #ifndef GC9A01_SCREEN_NUMOF
-#define GC9A01_SCREEN_NUMOF        0
+#  define GC9A01_SCREEN_NUMOF      0
 #endif
 
 static gc9a01_t gc9a01_devs[GC9A01_NUMOF];
